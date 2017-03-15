@@ -1,0 +1,56 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd ">
+
+	<context:component-scan base-package="com.tamajit" />
+	<mvc:annotation-driven />
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	<bean id="emp1" class="com.tamajit.bean.Employee">
+		<property name="id" value="${emp1.id}"></property>
+		<property name="name" value="${emp1.name}"></property>
+	</bean>
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+		<property name="locations">
+			<list>
+				<value>myProp1.properties</value>
+				<value>classpath:myProp2.properties</value>
+				<value>file:c:/myProp3.properties</value>
+				<value>WEB-INF/myProp4.properties</value>
+				<!-- By default property file is searched in same location of WEB-INF. 
+					if starts with classpath: then property file is searched in classpath. to 
+					specify absolute path prefix path with file:. -->
+			</list>
+		</property>
+		 <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_FALLBACK" />
+<!-- 	    SYSTEM_PROPERTIES_MODE_FALLBACK: This is the default mode.
+        SYSTEM_PROPERTIES_MODE_OVERRIDE: In this mode, Spring will resolve the placeholders to system properties first. If a system property does exist, its value will override the value in the properties file.
+        SYSTEM_PROPERTIES_MODE_NEVER: Spring will not take system properties into consideration when resolving the placeholders. -->
+	
+	<!-- To ignore the exception which will be thrown in case a properties file could not be found, specify the following property of the PropertyPlaceholderConfigurer bean.
+	In this example myProp3.properties file is missing but no exception is thrown.-->
+	<property name="ignoreResourceNotFound" value="true" />
+	<!-- To ignore the exception which will be thrown in case a placeholder could not be resolved, specify the following property of the PropertyPlaceholderConfigurer bean.
+	In this example by placeholder is missing but no exception is thrown. -->
+	<property name="ignoreUnresolvablePlaceholders" value="true" />
+	<!-- When the property ignoreUnresolvablePlaceholders is set to true and 
+		a placeholder could not be resolved, Spring will inject name of the placeholder 
+		as it is. -->
+	</bean>
+
+</beans>
