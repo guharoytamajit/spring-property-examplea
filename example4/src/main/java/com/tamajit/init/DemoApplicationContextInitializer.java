@@ -1,21 +1,27 @@
 package com.tamajit.init;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.PropertySource;
-import org.springframework.core.io.Resource;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.env.MutablePropertySources;
 
-public class DemoApplicationContextInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-	 
-	 @Override
-	 public void initialize(ConfigurableApplicationContext ac) {
-	  ConfigurableEnvironment appEnvironment = ac.getEnvironment();
-//	  appEnvironment.addActiveProfile("demo");
-	  Resource resource = ac.getResource("classpath:file.yml");
-      YamlPropertySourceLoader sourceLoader = new YamlPropertySourceLoader();
-      PropertySource<?> yamlTestProperties = yamlTestProperties = sourceLoader.load("yamlTestProperties", resource, null);
-      applicationContext.getEnvironment().getPropertySources().addFirst(yamlTestProperties);
-	 
-	 }
+public class DemoApplicationContextInitializer implements
+		ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+	@Override
+	public void initialize(ConfigurableApplicationContext ac) {
+		ConfigurableEnvironment appEnvironment = ac.getEnvironment();
+		appEnvironment.setActiveProfiles("demo1", "demo2");
+		// appEnvironment.
+		MutablePropertySources propertySources = appEnvironment
+				.getPropertySources();
+		Map myMap = new HashMap();
+		myMap.put("xyz", "myValue");
+		propertySources.addFirst(new MapPropertySource("MY_MAP", myMap));
+
 	}
+}
